@@ -1,0 +1,35 @@
+| Задание 44 |
+| --- |
+| В ячейке ниже представлен код генерирующий DataFrame, которая состоит всего из 1 столбца. Ваша задача перевести его в one hot вид. Сможете ли вы это сделать без get_dummies?
+
+import random
+lst = ['robot'] * 10
+lst += ['human'] * 10
+random.shuffle(lst)
+data = pd.DataFrame({'whoAmI'lst})
+data.head() |
+
+
+_______________________________________________________________________________________________________________________
+
+
+
+import random
+import numpy as np
+import pandas as pd
+
+lst = ['robot'] * 10
+lst += ['human'] * 10
+random.shuffle(lst)
+data = pd.DataFrame({'whoAmI':lst})
+
+# создаем словарь для one-hot кодирования
+dict_one_hot = {}
+for i, val in enumerate(set(data['whoAmI'])):
+    dict_one_hot[val] = np.zeros(len(set(data['whoAmI'])))
+    dict_one_hot[val][i] = 1
+
+# создаем новый DataFrame с one-hot кодированием
+new_data = pd.DataFrame([dict_one_hot[val] for val in data['whoAmI']])
+new_data.columns = list(set(data['whoAmI']))
+new_data.head()
